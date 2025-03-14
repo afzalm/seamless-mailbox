@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Star, StarIcon, Archive, Trash, MailOpen,
@@ -119,7 +118,7 @@ const mailData: Mail[] = [
       avatar: 'https://i.pravatar.cc/100?u=emma',
     },
     subject: 'Dinner this Friday?',
-    preview: 'Hi there! I was wondering if you'd like to grab dinner this Friday? There's a new Italian restaurant downtown that I've been wanting to try.',
+    preview: 'Hi there! I was wondering if you\'d like to grab dinner this Friday? There\'s a new Italian restaurant downtown that I\'ve been wanting to try.',
     date: new Date(2023, 3, 26, 11, 23),
     isStarred: false,
     isRead: true,
@@ -147,7 +146,7 @@ const mailData: Mail[] = [
       avatar: 'https://i.pravatar.cc/100?u=jessica',
     },
     subject: 'Photos from the company retreat',
-    preview: 'Hi all, I've uploaded the photos from our company retreat last week. You can download them from the shared drive.',
+    preview: 'Hi all, I\'ve uploaded the photos from our company retreat last week. You can download them from the shared drive.',
     date: new Date(2023, 3, 25, 16, 9),
     isStarred: true,
     isRead: true,
