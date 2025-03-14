@@ -71,3 +71,38 @@
 textarea:focus {
   outline: none;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .mail-item {
+    padding: 10px 12px;
+  }
+  
+  /* Hide scrollbars on mobile */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+}
+
+/* Gmail-like mobile styling */
+.mobile-compose-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobile-toolbar {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+

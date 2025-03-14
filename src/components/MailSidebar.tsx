@@ -2,11 +2,18 @@
 import { useState } from 'react';
 import { 
   Inbox, Send, Star, File, Trash, Edit,
-  ChevronDown, Settings, Search, Plus
+  ChevronDown, Settings, Search, Plus,
+  Menu
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ComposeEmail } from './ComposeEmail';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { 
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 
 interface SidebarLinkProps {
   icon: React.ReactNode;
@@ -49,13 +56,18 @@ const SidebarLink = ({ icon, label, count, isActive, onClick }: SidebarLinkProps
 export function MailSidebar() {
   const [activeFolder, setActiveFolder] = useState('inbox');
   const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const isMobile = useIsMobile();
   
-  return (
-    <div className="glass-panel h-full w-64 flex flex-col rounded-l-xl">
+  const SidebarContent = () => (
+    <div className="h-full flex flex-col">
       <div className="p-4">
         <Button 
           className="w-full justify-start gap-2 bg-blue-500 hover:bg-blue-600 transition-all duration-200 shadow-sm hover:shadow-md"
-          onClick={() => setIsComposeOpen(true)}
+          onClick={() => {
+            setIsComposeOpen(true);
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         >
           <Edit className="h-4 w-4" />
           <span>Compose</span>
@@ -68,33 +80,48 @@ export function MailSidebar() {
           label="Inbox" 
           count={14} 
           isActive={activeFolder === 'inbox'} 
-          onClick={() => setActiveFolder('inbox')}
+          onClick={() => {
+            setActiveFolder('inbox');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<Star />} 
           label="Starred" 
           count={3} 
           isActive={activeFolder === 'starred'} 
-          onClick={() => setActiveFolder('starred')}
+          onClick={() => {
+            setActiveFolder('starred');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<Send />} 
           label="Sent" 
           isActive={activeFolder === 'sent'} 
-          onClick={() => setActiveFolder('sent')}
+          onClick={() => {
+            setActiveFolder('sent');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<File />} 
           label="Drafts" 
           count={2} 
           isActive={activeFolder === 'drafts'} 
-          onClick={() => setActiveFolder('drafts')}
+          onClick={() => {
+            setActiveFolder('drafts');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<Trash />} 
           label="Trash" 
           isActive={activeFolder === 'trash'} 
-          onClick={() => setActiveFolder('trash')}
+          onClick={() => {
+            setActiveFolder('trash');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         
         <div className="mt-6 mb-2 px-3">
@@ -110,19 +137,28 @@ export function MailSidebar() {
           icon={<div className="h-3 w-3 rounded-full bg-blue-500 ml-1" />} 
           label="Work" 
           isActive={activeFolder === 'work'} 
-          onClick={() => setActiveFolder('work')}
+          onClick={() => {
+            setActiveFolder('work');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<div className="h-3 w-3 rounded-full bg-green-500 ml-1" />} 
           label="Personal" 
           isActive={activeFolder === 'personal'} 
-          onClick={() => setActiveFolder('personal')}
+          onClick={() => {
+            setActiveFolder('personal');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
         <SidebarLink 
           icon={<div className="h-3 w-3 rounded-full bg-purple-500 ml-1" />} 
           label="Finance" 
           isActive={activeFolder === 'finance'} 
-          onClick={() => setActiveFolder('finance')}
+          onClick={() => {
+            setActiveFolder('finance');
+            if (isMobile) setIsSidebarOpen(false);
+          }}
         />
       </div>
       
@@ -132,11 +168,34 @@ export function MailSidebar() {
           <span className="text-xs">1.2 GB of 15 GB used</span>
         </div>
       </div>
+    </div>
+  );
+  
+  return (
+    <>
+      {isMobile ? (
+        <Drawer open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+          <DrawerTrigger asChild className="md:hidden absolute left-4 top-4 z-10">
+            <Button variant="ghost" size="icon">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent className="h-[85vh] rounded-t-xl">
+            <div className="glass-panel h-full overflow-auto">
+              <SidebarContent />
+            </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <div className="glass-panel h-full w-64 flex flex-col rounded-l-xl">
+          <SidebarContent />
+        </div>
+      )}
       
       <ComposeEmail 
         isOpen={isComposeOpen} 
         onClose={() => setIsComposeOpen(false)} 
       />
-    </div>
+    </>
   );
 }

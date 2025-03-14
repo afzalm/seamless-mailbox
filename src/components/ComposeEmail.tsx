@@ -7,12 +7,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { 
   Bold, Italic, Underline, AlignLeft, 
   AlignCenter, AlignRight, List, ListOrdered, 
-  Link, Paperclip, Send, Image, Code, Quote, Trash
+  Link, Paperclip, Send, Image, Code, Quote, Trash,
+  X, ChevronLeft
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ComposeEmailProps {
   isOpen: boolean;
@@ -27,6 +30,7 @@ export function ComposeEmail({ isOpen, onClose }: ComposeEmailProps) {
   const [isAiAssistOpen, setIsAiAssistOpen] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiSuggestion, setAiSuggestion] = useState('');
+  const isMobile = useIsMobile();
 
   const handleSend = () => {
     // In a real app, this would send the email
@@ -86,35 +90,54 @@ export function ComposeEmail({ isOpen, onClose }: ComposeEmailProps) {
     setIsAiAssistOpen(false);
   };
 
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="sm:max-w-[600px] p-0 flex flex-col h-full">
-        <SheetHeader className="px-6 py-4 border-b">
-          <SheetTitle>New Message</SheetTitle>
-        </SheetHeader>
+  const EmailComposeContent = () => (
+    <div className="flex flex-col h-full">
+      <div className="border-b px-4 py-3 flex items-center justify-between">
+        {isMobile && (
+          <button onClick={onClose} className="p-1">
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+        )}
+        <h2 className="text-lg font-medium">{isMobile ? "Compose" : "New Message"}</h2>
+        {isMobile ? (
+          <div className="flex items-center">
+            <button onClick={handleSend} className="p-1">
+              <Send className="h-5 w-5" />
+            </button>
+            <button onClick={onClose} className="p-1 ml-2">
+              <Trash className="h-5 w-5" />
+            </button>
+          </div>
+        ) : (
+          <button onClick={onClose} className="p-1">
+            <X className="h-5 w-5" />
+          </button>
+        )}
+      </div>
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b">
+          <Input 
+            type="email" 
+            placeholder="To" 
+            value={to}
+            onChange={(e) => setTo(e.target.value)}
+            className="border-0 focus-visible:ring-0 px-0 py-1 text-sm"
+          />
+        </div>
         
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="px-6 py-3 border-b">
-            <Input 
-              type="email" 
-              placeholder="To" 
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              className="border-0 focus-visible:ring-0 px-0 py-1 text-sm"
-            />
-          </div>
-          
-          <div className="px-6 py-3 border-b">
-            <Input 
-              type="text" 
-              placeholder="Subject" 
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              className="border-0 focus-visible:ring-0 px-0 py-1 text-sm"
-            />
-          </div>
-          
-          <div className="px-6 py-3 border-b flex flex-wrap gap-2">
+        <div className="px-4 py-3 border-b">
+          <Input 
+            type="text" 
+            placeholder="Subject" 
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="border-0 focus-visible:ring-0 px-0 py-1 text-sm"
+          />
+        </div>
+        
+        {!isMobile && (
+          <div className="px-4 py-3 border-b flex flex-wrap gap-2">
             <Button 
               variant="ghost" 
               size="sm" 
@@ -249,17 +272,105 @@ export function ComposeEmail({ isOpen, onClose }: ComposeEmailProps) {
               </DialogContent>
             </Dialog>
           </div>
-          
-          <div className="flex-1 px-6 py-4 overflow-auto">
-            <Textarea 
-              placeholder="Compose your email..."
-              className="min-h-[200px] border-0 resize-none focus-visible:ring-0 p-0 flex-1 h-full"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
-        </div>
+        )}
         
+        {isMobile && (
+          <div className="px-4 py-2 border-b flex overflow-x-auto gap-1 no-scrollbar">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('bold')}
+            >
+              <Bold className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('italic')}
+            >
+              <Italic className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('underline')}
+            >
+              <Underline className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('list')}
+            >
+              <List className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('ordered-list')}
+            >
+              <ListOrdered className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('link')}
+            >
+              <Link className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('quote')}
+            >
+              <Quote className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0 shrink-0" 
+              onClick={() => applyFormatting('code')}
+            >
+              <Code className="h-4 w-4" />
+            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 shrink-0">
+                  <Paperclip className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72">
+                <div className="grid gap-2">
+                  <Button variant="outline" className="w-full justify-start">
+                    Upload from device
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    Google Drive
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
+        
+        <div className="flex-1 px-4 py-2 overflow-auto">
+          <Textarea 
+            placeholder="Compose your email..."
+            className="min-h-[200px] border-0 resize-none focus-visible:ring-0 p-0 flex-1 h-full"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </div>
+      </div>
+      
+      {!isMobile && (
         <div className="border-t p-4 flex justify-between">
           <Button onClick={handleSend} className="bg-blue-500 hover:bg-blue-600">
             <Send className="mr-2 h-4 w-4" />
@@ -298,6 +409,24 @@ export function ComposeEmail({ isOpen, onClose }: ComposeEmailProps) {
             </Button>
           </div>
         </div>
+      )}
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={isOpen} onOpenChange={onClose}>
+        <DrawerContent className="h-[95vh] rounded-t-xl">
+          <EmailComposeContent />
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="sm:max-w-[600px] p-0 flex flex-col h-full">
+        <EmailComposeContent />
       </SheetContent>
     </Sheet>
   );
