@@ -2,6 +2,7 @@
 import { Search, Bell, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export function MailHeader() {
   return (
@@ -21,6 +22,8 @@ export function MailHeader() {
       </div>
       
       <div className="flex items-center gap-3">
+        <ThemeToggle />
+        
         <button className="relative p-2 rounded-full hover:bg-mail-200 transition-all duration-200">
           <Bell className="h-5 w-5 text-mail-600" />
           <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500"></span>
