@@ -25,6 +25,8 @@
   --item-hover: rgba(0, 122, 255, 0.05);
   --glass-bg: rgba(255, 255, 255, 0.8);
   --border-color: rgba(0, 0, 0, 0.08);
+  --text-primary: #212836;
+  --text-secondary: rgba(0, 0, 0, 0.6);
 }
 
 .theme-teal {
@@ -34,6 +36,8 @@
   --item-hover: rgba(6, 182, 212, 0.05);
   --glass-bg: rgba(255, 255, 255, 0.8);
   --border-color: rgba(0, 0, 0, 0.08);
+  --text-primary: #212836;
+  --text-secondary: rgba(0, 0, 0, 0.6);
 }
 
 .theme-dark {
@@ -43,6 +47,8 @@
   --item-hover: rgba(255, 255, 255, 0.05);
   --glass-bg: rgba(40, 44, 52, 0.8);
   --border-color: rgba(255, 255, 255, 0.08);
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.6);
   
   color-scheme: dark;
 }
@@ -55,6 +61,7 @@
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
+  color: var(--text-primary);
 }
 
 .mail-item:hover {
@@ -68,11 +75,13 @@
 .mail-icon {
   width: 18px;
   height: 18px;
+  color: var(--accent-color);
 }
 
 .mail-button {
   border-radius: 4px;
   transition: all 0.2s;
+  color: var(--text-primary);
 }
 
 .mail-button:hover {
@@ -84,6 +93,7 @@
   background-color: var(--glass-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .theme-dark .glass-panel {
@@ -93,6 +103,7 @@
 /* Body background for themes */
 body {
   background: var(--gradient-bg);
+  color: var(--text-primary);
 }
 
 /* Accent color overrides */
@@ -112,19 +123,24 @@ body {
   --tw-ring-color: var(--accent-color) !important;
 }
 
-.theme-dark .bg-mail-100 {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-}
-
-.theme-dark .text-mail-500,
+/* Theme-specific overrides */
 .theme-dark .text-mail-600,
 .theme-dark .text-mail-800 {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: var(--text-secondary) !important;
+}
+
+.theme-dark .bg-mail-100,
+.theme-dark .hover\:bg-mail-100:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 .theme-dark .bg-mail-200,
 .theme-dark .hover\:bg-mail-200:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.theme-dark .border-mail-200 {
+  border-color: var(--border-color) !important;
 }
 
 /* Animations */
@@ -191,11 +207,23 @@ textarea:focus {
   border-bottom: 1px solid var(--border-color);
 }
 
-/* Dark mode specific styles */
-.theme-dark {
-  color: rgba(255, 255, 255, 0.9);
+/* Input styling for dark mode */
+.theme-dark input,
+.theme-dark textarea {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.theme-dark .bg-gradient-to-br {
-  background: var(--gradient-bg);
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Override some component styles for dark mode */
+.theme-dark .bg-background {
+  background-color: rgba(33, 40, 54, 0.8) !important;
+}
+
+.theme-dark .text-foreground {
+  color: var(--text-primary) !important;
 }
