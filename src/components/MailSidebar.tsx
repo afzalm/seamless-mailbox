@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { ComposeEmail } from './ComposeEmail';
 
 interface SidebarLinkProps {
   icon: React.ReactNode;
@@ -47,11 +48,15 @@ const SidebarLink = ({ icon, label, count, isActive, onClick }: SidebarLinkProps
 
 export function MailSidebar() {
   const [activeFolder, setActiveFolder] = useState('inbox');
+  const [isComposeOpen, setIsComposeOpen] = useState(false);
   
   return (
     <div className="glass-panel h-full w-64 flex flex-col rounded-l-xl">
       <div className="p-4">
-        <Button className="w-full justify-start gap-2 bg-blue-500 hover:bg-blue-600 transition-all duration-200 shadow-sm hover:shadow-md">
+        <Button 
+          className="w-full justify-start gap-2 bg-blue-500 hover:bg-blue-600 transition-all duration-200 shadow-sm hover:shadow-md"
+          onClick={() => setIsComposeOpen(true)}
+        >
           <Edit className="h-4 w-4" />
           <span>Compose</span>
         </Button>
@@ -127,6 +132,11 @@ export function MailSidebar() {
           <span className="text-xs">1.2 GB of 15 GB used</span>
         </div>
       </div>
+      
+      <ComposeEmail 
+        isOpen={isComposeOpen} 
+        onClose={() => setIsComposeOpen(false)} 
+      />
     </div>
   );
 }
