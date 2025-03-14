@@ -1,11 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from 'react';
+import { MailSidebar } from '@/components/MailSidebar';
+import { MailHeader } from '@/components/MailHeader';
+import { MailList, type Mail } from '@/components/MailList';
+import { MailDetail } from '@/components/MailDetail';
 
 const Index = () => {
+  const [selectedMail, setSelectedMail] = useState<Mail | null>(null);
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+      <div className="flex flex-col flex-1 overflow-hidden rounded-xl shadow-xl">
+        <MailHeader />
+        <div className="flex flex-1 overflow-hidden">
+          <MailSidebar />
+          {selectedMail ? (
+            <MailDetail 
+              mail={selectedMail} 
+              onBack={() => setSelectedMail(null)} 
+            />
+          ) : (
+            <MailList onSelectMail={setSelectedMail} />
+          )}
+        </div>
       </div>
     </div>
   );
