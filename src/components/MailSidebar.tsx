@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { 
   Inbox, Send, Star, File, Trash, Edit,
-  ChevronDown, Settings, Search, Plus,
+  ChevronDown, Settings as SettingsIcon, Search, Plus,
   Menu
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { Link } from 'react-router-dom';
 
 interface SidebarLinkProps {
   icon: React.ReactNode;
@@ -164,7 +165,11 @@ export function MailSidebar() {
       
       <div className="mt-auto p-4 border-t border-mail-200">
         <div className="flex items-center justify-between text-mail-600">
-          <Settings className="h-5 w-5" />
+          <Link to="/settings">
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <SettingsIcon className="h-5 w-5" />
+            </Button>
+          </Link>
           <span className="text-xs">1.2 GB of 15 GB used</span>
         </div>
       </div>
